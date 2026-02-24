@@ -16,8 +16,15 @@ def login():
 
     # Enforce ADMIN_EMAIL restriction
     admin_email = os.getenv('ADMIN_EMAIL')
-    if email != admin_email:
-        return jsonify({"error": "Unauthorized email address"}), 403
+    
+    if not admin_email:
+        return jsonify({"error": "Server configuration error: ADMIN_EMAIL not set"}), 500
+
+    # Robust comparison (case-insensitive + stripped)
+    if email.strip().lower() != admin_email.strip().lower():
+        return jsonify({
+            "error": f"Unauthorized email address. Only {admin_email} is allowed."
+        }), 403
 
     supabase = get_supabase_client()
     try:

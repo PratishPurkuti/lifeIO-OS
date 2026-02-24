@@ -47,7 +47,7 @@ FLASK_SECRET_KEY=generate_a_random_string
 pip install -r requirements.txt
 
 # Run the app
-python app.py
+python main.py
 ```
 Visit `http://localhost:5000`.
 
