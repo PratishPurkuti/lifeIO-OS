@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+:root {
+    --pixel-bg: #1a1a2e;
+    --pixel-accent: #e94560;
+    --pixel-secondary: #0f3460;
+    --pixel-text: #ffffff;
+    --pixel-border: #4e4e6a;
+}
+
+body {
+    background-color: var(--pixel-bg);
+    color: var(--pixel-text);
+    font-family: 'VT323', monospace;
+    image-rendering: pixelated;
+}
+
+h1,
+h2,
+h3,
+.pixel-font {
+    font-family: 'Press Start 2P', cursive;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Pixel Border Utility */
+.pixel-border {
+    position: relative;
+    border: 4px solid var(--pixel-border);
+    box-shadow:
+        0 -4px 0 -2px var(--pixel-bg),
+        0 4px 0 -2px var(--pixel-bg),
+        -4px 0 0 -2px var(--pixel-bg),
+        4px 0 0 -2px var(--pixel-bg),
+        inset 0 0 0 2px var(--pixel-bg);
+}
+
+.pixel-card {
+    background: var(--pixel-secondary);
+    padding: 1rem;
+    border: 4px solid #fff;
+    box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.5);
+}
+
+.pixel-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: var(--pixel-accent);
+    color: white;
+    border: none;
+    box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.pixel-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.3);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--pixel-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--pixel-border);
+}
+
+.glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}

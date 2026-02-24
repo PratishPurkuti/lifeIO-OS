@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+    <!-- Column 1: Profile & XP -->
+    <div class="lg:col-span-1 space-y-6">
+        <div class="pixel-card bg-slate-800 text-center">
+            <div class="mb-4 inline-block p-2 border-4 border-white bg-slate-900">
+                <img src="{{ url_for('static', filename='img/avatar.png') }}" alt="Avatar"
+                    class="w-32 h-32 pixelated mx-auto">
+            </div>
+            <h2 class="text-xl mb-2">Level <span id="level-val">--</span></h2>
+            <div class="w-full bg-slate-900 h-6 border-2 border-white relative overflow-hidden">
+                <div id="xp-progress-bar" class="bg-yellow-400 h-full transition-all duration-500" style="width: 0%">
+                </div>
+            </div>
+            <p class="text-xs mt-2 text-slate-400">XP: <span id="total-xp-val">--</span> / 500</p>
+        </div>
+
+        <div class="pixel-card bg-slate-800">
+            <h3 class="text-sm mb-4 text-rose-500">Today's Gains</h3>
+            <p class="text-2xl"><span id="today-xp-val">0</span> XP</p>
+        </div>
+
+        <button id="open-entry-modal" class="pixel-btn w-full text-lg">
+            Add New Entry +
+        </button>
+    </div>
+
+    <!-- Column 2 & 3: Skill Bars & Visuals -->
+    <div class="lg:col-span-2 space-y-6">
+        <div class="pixel-card bg-slate-800">
+            <h3 class="text-sm mb-6 border-b-2 border-slate-700 pb-2">Skill Progress</h3>
+
+            <div class="space-y-6">
+                <!-- Skill: Work -->
+                <div>
+                    <div class="flex justify-between mb-1">
+                        <span class="text-sm">Work</span>
+                        <span id="skill-text-work" class="text-xs">0 XP</span>
+                    </div>
+                    <div class="w-full bg-slate-900 h-4 border-2 border-slate-600">
+                        <div id="skill-bar-work" class="bg-blue-500 h-full" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Skill: Study -->
+                <div>
+                    <div class="flex justify-between mb-1">
+                        <span class="text-sm">Study</span>
+                        <span id="skill-text-study" class="text-xs">0 XP</span>
+                    </div>
+                    <div class="w-full bg-slate-900 h-4 border-2 border-slate-600">
+                        <div id="skill-bar-study" class="bg-emerald-500 h-full" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Skill: Workout -->
+                <div>
+                    <div class="flex justify-between mb-1">
+                        <span class="text-sm">Workout</span>
+                        <span id="skill-text-workout" class="text-xs">0 XP</span>
+                    </div>
+                    <div class="w-full bg-slate-900 h-4 border-2 border-slate-600">
+                        <div id="skill-bar-workout" class="bg-orange-500 h-full" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Skill: Cooking -->
+                <div>
+                    <div class="flex justify-between mb-1">
+                        <span class="text-sm">Cooking</span>
+                        <span id="skill-text-cooking" class="text-xs">0 XP</span>
+                    </div>
+                    <div class="w-full bg-slate-900 h-4 border-2 border-slate-600">
+                        <div id="skill-bar-cooking" class="bg-yellow-600 h-full" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Skill: Wasted Time -->
+                <div>
+                    <div class="flex justify-between mb-1">
+                        <span class="text-sm">Wasted Time</span>
+                        <span id="skill-text-wasted-time" class="text-xs">0 XP</span>
+                    </div>
+                    <div class="w-full bg-slate-900 h-4 border-2 border-slate-600">
+                        <div id="skill-bar-wasted-time" class="bg-slate-700 h-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Finance Stats -->
+            <div class="pixel-card bg-slate-800">
+                <h3 class="text-sm mb-4">Finance (30d)</h3>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span>Income</span>
+                            <span id="finance-income-val">$0</span>
+                        </div>
+                        <div class="w-full bg-slate-900 h-4 border-2 border-slate-600">
+                            <div id="finance-income-bar" class="bg-green-500 h-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span>Expense</span>
+                            <span id="finance-expense-val">$0</span>
+                        </div>
+                        <div class="w-full bg-slate-900 h-4 border-2 border-slate-600">
+                            <div id="finance-expense-bar" class="bg-rose-500 h-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <p class="text-sm border-t border-slate-700 pt-2">Net: <span id="finance-net-val"
+                            class="font-bold">$0</span></p>
+                </div>
+            </div>
+
+            <!-- Recent Sleep -->
+            <div class="pixel-card bg-slate-800">
+                <h3 class="text-sm mb-4">Recent Sleep</h3>
+                <div id="sleep-logs-container" class="space-y-2 max-h-40 overflow-y-auto pr-2">
+                    <p class="text-xs text-slate-500">No logs yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Entry Modal -->
+<div id="add-entry-modal"
+    class="fixed inset-0 bg-black bg-opacity-80 z-[100] flex items-center justify-center hidden p-4">
+    <div class="pixel-card bg-slate-800 w-full max-w-lg">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-lg text-rose-500">Log Data</h2>
+            <button id="close-entry-modal" class="text-white hover:text-rose-500">X</button>
+        </div>
+
+        <div class="flex gap-2 mb-6 border-b-2 border-slate-700 pb-2 overflow-x-auto">
+            <button onclick="switchTab('activity')" class="tab-btn px-4 py-1 text-xs pixel-btn"
+                id="tab-activity">Activity</button>
+            <button onclick="switchTab('sleep')" class="tab-btn px-4 py-1 text-xs bg-slate-700"
+                id="tab-sleep">Sleep</button>
+            <button onclick="switchTab('finance')" class="tab-btn px-4 py-1 text-xs bg-slate-700"
+                id="tab-finance">Finance</button>
+        </div>
+
+        <!-- Activity Form -->
+        <form id="entry-form-activity" class="space-y-4 tab-content">
+            <div>
+                <label class="block mb-2 text-sm">Category</label>
+                <select name="category" required
+                    class="w-full bg-slate-900 border-2 border-slate-600 p-2 text-white outline-none">
+                    <option value="Work">Work (1.2x XP)</option>
+                    <option value="Study">Study (1.1x XP)</option>
+                    <option value="Workout">Workout (1.3x XP)</option>
+                    <option value="Cooking">Cooking (1.0x XP)</option>
+                    <option value="Wasted Time">Wasted Time (-1.0x XP)</option>
+                </select>
+            </div>
+            <div>
+                <label class="block mb-2 text-sm">Start Time</label>
+                <input type="datetime-local" name="start_time" required
+                    class="w-full bg-slate-900 border-2 border-slate-600 p-2 text-white outline-none">
+            </div>
+            <div>
+                <label class="block mb-2 text-sm">End Time (Optional)</label>
+                <input type="datetime-local" name="end_time"
+                    class="w-full bg-slate-900 border-2 border-slate-600 p-2 text-white outline-none">
+            </div>
+            <button type="submit" class="pixel-btn w-full mt-4">Record Activity</button>
+        </form>
+
+        <!-- Sleep Form -->
+        <form id="entry-form-sleep" class="space-y-4 tab-content hidden">
+            <div>
+                <label class="block mb-2 text-sm">Sleep Time</label>
+                <input type="datetime-local" name="sleep_time" required
+                    class="w-full bg-slate-900 border-2 border-slate-600 p-2 text-white outline-none">
+            </div>
+            <div>
+                <label class="block mb-2 text-sm">Wake Time</label>
+                <input type="datetime-local" name="wake_time" required
+                    class="w-full bg-slate-900 border-2 border-slate-600 p-2 text-white outline-none">
+            </div>
+            <div>
+                <label class="block mb-2 text-sm">Quality (1-5)</label>
+                <input type="number" name="quality" min="1" max="5" required
+                    class="w-full bg-slate-900 border-2 border-slate-600 p-2 text-white outline-none">
+            </div>
+            <button type="submit" class="pixel-btn w-full mt-4">Log Sleep</button>
+        </form>
+
+        <!-- Finance Form -->
+        <form id="entry-form-finance" class="space-y-4 tab-content hidden">
+            <div>
+                <label class="block mb-2 text-sm">Date</label>
+                <input type="date" name="date" required
+                    class="w-full bg-slate-900 border-2 border-slate-600 p-2 text-white outline-none">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block mb-2 text-sm">Income</label>
+                    <input type="number" name="income" step="0.01" value="0"
+                        class="w-full bg-slate-900 border-2 border-slate-600 p-2 text-white outline-none">
+                </div>
+                <div>
+                    <label class="block mb-2 text-sm">Expense</label>
+                    <input type="number" name="expense" step="0.01" value="0"
+                        class="w-full bg-slate-900 border-2 border-slate-600 p-2 text-white outline-none">
+                </div>
+            </div>
+            <button type="submit" class="pixel-btn w-full mt-4">Update Finance</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+        document.querySelectorAll('.tab-btn').forEach(el => {
+            el.classList.add('bg-slate-700');
+            el.classList.remove('pixel-btn');
+        });
+
+        document.getElementById(`entry-form-${tabId}`).classList.remove('hidden');
+        const tabBtn = document.getElementById(`tab-${tabId}`);
+        tabBtn.classList.add('pixel-btn');
+        tabBtn.classList.remove('bg-slate-700');
+    }
+</script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
